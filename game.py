@@ -10,84 +10,130 @@ st.set_page_config(page_title="Slam Dunk English 🏀", layout="centered", initi
 # ===== CSS =====
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
-
-.stApp { background: linear-gradient(160deg, #fff8f0 0%, #f0fff4 100%); }
-
-h1, h2, h3 { font-family: 'Fredoka One', cursive !important; }
-
-.stButton>button {
-    width: 100%;
-    border-radius: 30px;
-    height: 3.3em;
-    font-size: 1.15em;
-    margin-bottom: 10px;
-    font-weight: 800;
-    background: linear-gradient(135deg, #1a237e, #283593);
-    color: white;
-    border: none;
-    box-shadow: 0 5px 15px rgba(26,35,126,0.30);
-    transition: transform 0.12s, box-shadow 0.12s;
-    letter-spacing: 0.5px;
+/* === BACKGROUND - Dark Navy with Grid (like NBA game) === */
+.stApp {
+    background:
+        repeating-linear-gradient(0deg, transparent, transparent 49px, rgba(255,255,255,0.03) 49px, rgba(255,255,255,0.03) 50px),
+        repeating-linear-gradient(90deg, transparent, transparent 49px, rgba(255,255,255,0.03) 49px, rgba(255,255,255,0.03) 50px),
+        linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%) !important;
 }
-.stButton>button:hover {
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 8px 20px rgba(26,35,126,0.40);
-}
-.stButton>button:active { transform: scale(0.97); }
 
+/* === MAIN CARD - White with thick orange border === */
+.main .block-container {
+    background: linear-gradient(180deg, #f8f8f8 0%, #ffffff 100%) !important;
+    border-radius: 30px !important;
+    padding: 35px 28px 30px !important;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.55) !important;
+    outline: 7px solid #ff6b35;
+    max-width: 600px !important;
+    margin-top: 18px !important;
+    margin-bottom: 18px !important;
+}
+
+/* === TYPOGRAPHY === */
+h1, h2, h3, h4, p, div, span, label, .stMarkdown {
+    font-family: 'Arial Black', Arial, sans-serif !important;
+}
+h1 {
+    color: #ff6b35 !important;
+    text-shadow: 3px 3px 0px rgba(0,0,0,0.15) !important;
+    font-weight: 900 !important;
+    letter-spacing: 1px !important;
+    text-align: center !important;
+}
+h2, h3 { color: #1a1a2e !important; font-weight: 900 !important; }
+
+/* === BUTTONS - Bold 3D style === */
+.stButton > button {
+    width: 100% !important;
+    border-radius: 15px !important;
+    height: 3.6em !important;
+    font-size: 1.1em !important;
+    font-weight: 900 !important;
+    font-family: 'Arial Black', Arial, sans-serif !important;
+    border: none !important;
+    color: white !important;
+    letter-spacing: 1px !important;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.4) !important;
+    margin-bottom: 10px !important;
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%) !important;
+    box-shadow: 0 7px 0 rgba(140,0,0,0.45), 0 10px 22px rgba(0,0,0,0.30) !important;
+    transition: transform 0.1s, box-shadow 0.1s !important;
+}
+.stButton > button:hover {
+    transform: translateY(-3px) scale(1.02) !important;
+    box-shadow: 0 10px 0 rgba(140,0,0,0.4), 0 14px 28px rgba(0,0,0,0.35) !important;
+    background: linear-gradient(135deg, #f05545 0%, #d32f2f 100%) !important;
+}
+.stButton > button:active {
+    transform: translateY(4px) scale(0.97) !important;
+    box-shadow: 0 2px 0 rgba(140,0,0,0.45) !important;
+}
+
+/* === BIG WORD DISPLAY === */
 .big-word {
     font-size: 2.8em;
     font-weight: 900;
     text-align: center;
-    padding: 22px 15px;
-    background: linear-gradient(135deg, #FF6B00, #FF9500);
+    padding: 25px 15px;
+    background: linear-gradient(135deg, #FF6B00 0%, #FF9500 100%);
     color: white;
-    border-radius: 28px;
-    margin: 10px 0 22px 0;
+    border-radius: 20px;
+    margin: 12px 0 24px 0;
     letter-spacing: 3px;
-    box-shadow: 0 8px 25px rgba(255,107,0,0.40);
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.25);
+    box-shadow: 0 8px 0 rgba(180,60,0,0.55), 0 14px 30px rgba(255,107,0,0.40);
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.30);
+    font-family: 'Arial Black', Arial, sans-serif !important;
 }
+
+/* === SCORE / STREAK / TOPIC BOXES === */
 .score-box {
-    font-size: 1.25em;
+    font-size: 1.2em;
     font-weight: 900;
     text-align: center;
-    padding: 12px 8px;
-    background: linear-gradient(135deg, #FF6B00, #FF8C00);
-    border-radius: 18px;
+    padding: 14px 8px;
+    background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+    border-radius: 15px;
     color: white;
-    box-shadow: 0 4px 14px rgba(255,107,0,0.35);
+    box-shadow: 0 6px 0 rgba(0,100,0,0.45), 0 10px 18px rgba(39,174,96,0.35);
+    font-family: 'Arial Black', Arial, sans-serif !important;
 }
 .streak-box {
     font-size: 1.1em;
     text-align: center;
-    padding: 12px 8px;
-    background: linear-gradient(135deg, #e74c3c, #c0392b);
-    border-radius: 18px;
+    padding: 14px 8px;
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    border-radius: 15px;
     color: white;
     font-weight: 900;
-    box-shadow: 0 4px 14px rgba(231,76,60,0.35);
+    box-shadow: 0 6px 0 rgba(140,0,0,0.45), 0 10px 18px rgba(231,76,60,0.35);
+    font-family: 'Arial Black', Arial, sans-serif !important;
 }
 .topic-badge {
-    font-size: 1.1em;
+    font-size: 1.2em;
     text-align: center;
-    padding: 12px 8px;
-    background: linear-gradient(135deg, #27ae60, #2ecc71);
-    border-radius: 18px;
+    padding: 14px 8px;
+    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+    border-radius: 15px;
     color: white;
-    font-weight: 700;
-    box-shadow: 0 4px 14px rgba(39,174,96,0.35);
+    font-weight: 900;
+    box-shadow: 0 6px 0 rgba(0,80,160,0.45), 0 10px 18px rgba(52,152,219,0.35);
+    font-family: 'Arial Black', Arial, sans-serif !important;
 }
+
+/* === WELCOME BOX === */
 .welcome-box {
-    background: linear-gradient(135deg, #1a237e 0%, #283593 50%, #1565c0 100%);
-    border-radius: 30px;
-    padding: 30px 20px 25px 20px;
+    background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+    border-radius: 28px;
+    padding: 30px 22px 26px 22px;
     text-align: center;
     color: white;
-    box-shadow: 0 12px 35px rgba(26,35,126,0.45);
-    margin-bottom: 22px;
+    box-shadow: 0 9px 0 rgba(180,55,0,0.5), 0 16px 42px rgba(255,107,53,0.55);
+    margin-bottom: 24px;
+    border: 4px solid rgba(255,255,255,0.28);
 }
+
+/* === SPORTS ROW === */
 .sports-row {
     display: flex;
     justify-content: center;
@@ -96,11 +142,51 @@ h1, h2, h3 { font-family: 'Fredoka One', cursive !important; }
     flex-wrap: wrap;
     margin-bottom: 18px;
 }
+
+/* === INPUT FIELD === */
+.stTextInput > div > div > input {
+    border-radius: 15px !important;
+    border: 3px solid #ff6b35 !important;
+    font-size: 1.15em !important;
+    font-weight: 700 !important;
+    padding: 10px 16px !important;
+    font-family: 'Arial Black', Arial, sans-serif !important;
+    background: #fff8f0 !important;
+    color: #1a1a2e !important;
+}
+.stTextInput > div > div > input:focus {
+    border-color: #f7931e !important;
+    box-shadow: 0 0 0 3px rgba(255,107,53,0.25) !important;
+}
+
+/* === ALERTS === */
+.stSuccess > div, .stError > div, .stWarning > div, .stInfo > div {
+    border-radius: 15px !important;
+    font-weight: 700 !important;
+    font-family: 'Arial Black', Arial, sans-serif !important;
+}
+
+/* === PROGRESS BAR === */
+.stProgress > div > div > div {
+    background: linear-gradient(90deg, #ff6b35, #f7931e) !important;
+    border-radius: 10px !important;
+}
+
+/* === DIVIDER === */
+hr { border-color: rgba(255,107,53,0.3) !important; margin: 14px 0 !important; }
+
+/* === ANIMATIONS === */
 @keyframes floatBall {
     0%,100% { transform: translateY(0px) rotate(0deg); }
     33%      { transform: translateY(-14px) rotate(12deg); }
     66%      { transform: translateY(-6px)  rotate(-6deg); }
 }
+@keyframes bounceIn {
+    0%   { transform: scale(0.5); opacity: 0; }
+    70%  { transform: scale(1.08); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
 .b1{display:inline-block;font-size:2.8em;animation:floatBall 2.0s ease-in-out infinite 0.0s;}
 .b2{display:inline-block;font-size:2.4em;animation:floatBall 2.3s ease-in-out infinite 0.2s;}
 .b3{display:inline-block;font-size:2.6em;animation:floatBall 1.9s ease-in-out infinite 0.4s;}
