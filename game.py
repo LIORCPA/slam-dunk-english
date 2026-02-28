@@ -655,6 +655,7 @@ def init_session():
         "_actual_topic": None,
         "pending_sound": None,
         "player_name": None,
+        "seen_words": [],
     }
     for k, v in defaults.items():
         if k not in st.session_state:
@@ -663,9 +664,18 @@ def init_session():
 init_session()
 
 # ===== Helper: Get Question =====
-def get_new_question(topic, mode):
-    words = WORD_DATA[topic]
-    question = random.choice(words)
+def get_new_question(topic, mode, seen_words):
+    all_topic_words = WORD_DATA[topic]
+
+    # Filter out recently seen words; if all were seen, reset history
+    available = [w for w in all_topic_words if w['en'] not in seen_words]
+    if not available:
+        available = all_topic_words
+        st.session_state.seen_words = []
+
+    question = random.choice(available)
+
+    # Build wrong options from all words except the correct one
     all_words = [(w['en'], w['he']) for t, wlist in WORD_DATA.items()
                  for w in wlist if w['en'] != question['en']]
     wrong_samples = random.sample(all_words, min(3, len(all_words)))
@@ -684,7 +694,18 @@ def load_next_question():
         st.session_state._actual_topic = actual
     else:
         st.session_state._actual_topic = topic
-    q, opts = get_new_question(st.session_state._actual_topic, mode)
+
+    seen = st.session_state.seen_words
+    q, opts = get_new_question(st.session_state._actual_topic, mode, seen)
+
+    # Track seen words — keep history at most half the topic size
+    topic_size = len(WORD_DATA[st.session_state._actual_topic])
+    max_history = max(1, topic_size // 2)
+    seen.append(q['en'])
+    if len(seen) > max_history:
+        seen.pop(0)
+    st.session_state.seen_words = seen
+
     st.session_state.current_question = q
     st.session_state.options = opts
 
