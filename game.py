@@ -4,6 +4,14 @@ import json
 import os
 import base64
 import streamlit.components.v1 as components
+import requests
+
+# Optional Lottie — app works fine without it
+try:
+    from streamlit_lottie import st_lottie
+    LOTTIE_OK = True
+except ImportError:
+    LOTTIE_OK = False
 
 st.set_page_config(page_title="Slam Dunk English 🏀", layout="centered", initial_sidebar_state="collapsed")
 
@@ -43,7 +51,7 @@ h1 {
 }
 h2, h3 { color: #1a1a2e !important; font-weight: 900 !important; }
 
-/* === BUTTONS - Bold 3D style === */
+/* === BUTTONS - Bold 3D Arcade style === */
 .stButton > button {
     width: 100% !important;
     border-radius: 15px !important;
@@ -56,18 +64,18 @@ h2, h3 { color: #1a1a2e !important; font-weight: 900 !important; }
     letter-spacing: 1px !important;
     text-shadow: 1px 1px 3px rgba(0,0,0,0.4) !important;
     margin-bottom: 10px !important;
-    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%) !important;
-    box-shadow: 0 7px 0 rgba(140,0,0,0.45), 0 10px 22px rgba(0,0,0,0.30) !important;
+    background: linear-gradient(145deg, #e74c3c 0%, #c0392b 100%) !important;
+    box-shadow: 0 8px 0 rgba(100,0,0,0.5), 0 10px 22px rgba(0,0,0,0.30) !important;
     transition: transform 0.1s, box-shadow 0.1s !important;
 }
 .stButton > button:hover {
-    transform: translateY(-3px) scale(1.02) !important;
-    box-shadow: 0 10px 0 rgba(140,0,0,0.4), 0 14px 28px rgba(0,0,0,0.35) !important;
-    background: linear-gradient(135deg, #f05545 0%, #d32f2f 100%) !important;
+    transform: translateY(-3px) scale(1.03) !important;
+    box-shadow: 0 11px 0 rgba(100,0,0,0.45), 0 14px 28px rgba(0,0,0,0.35) !important;
+    background: linear-gradient(145deg, #f05545 0%, #d32f2f 100%) !important;
 }
 .stButton > button:active {
-    transform: translateY(4px) scale(0.97) !important;
-    box-shadow: 0 2px 0 rgba(140,0,0,0.45) !important;
+    transform: translateY(5px) scale(0.97) !important;
+    box-shadow: 0 2px 0 rgba(100,0,0,0.5) !important;
 }
 
 /* === BIG WORD DISPLAY === */
@@ -175,6 +183,44 @@ h2, h3 { color: #1a1a2e !important; font-weight: 900 !important; }
 /* === DIVIDER === */
 hr { border-color: rgba(255,107,53,0.3) !important; margin: 14px 0 !important; }
 
+/* === TROPHY CABINET === */
+.trophy-card {
+    background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+    border-radius: 16px;
+    padding: 14px 8px;
+    text-align: center;
+    box-shadow: 0 5px 0 rgba(180,130,0,0.4), 0 8px 18px rgba(253,203,110,0.5);
+    border: 3px solid rgba(255,255,255,0.6);
+    margin-bottom: 10px;
+    font-family: 'Arial Black', Arial, sans-serif !important;
+}
+.trophy-locked {
+    background: linear-gradient(135deg, #dfe6e9 0%, #b2bec3 100%);
+    border-radius: 16px;
+    padding: 14px 8px;
+    text-align: center;
+    box-shadow: 0 4px 0 rgba(0,0,0,0.15);
+    opacity: 0.5;
+    margin-bottom: 10px;
+    font-family: 'Arial Black', Arial, sans-serif !important;
+}
+.new-trophy-banner {
+    background: linear-gradient(135deg, #f9ca24 0%, #f0932b 100%);
+    border-radius: 20px;
+    padding: 18px;
+    text-align: center;
+    color: white;
+    font-weight: 900;
+    font-size: 1.3em;
+    box-shadow: 0 8px 0 rgba(180,100,0,0.5), 0 0 30px rgba(249,202,36,0.6);
+    animation: glowPulse 1s ease-in-out infinite alternate;
+    margin: 10px 0;
+}
+@keyframes glowPulse {
+    from { box-shadow: 0 8px 0 rgba(180,100,0,0.5), 0 0 20px rgba(249,202,36,0.5); }
+    to   { box-shadow: 0 8px 0 rgba(180,100,0,0.5), 0 0 40px rgba(249,202,36,0.9); }
+}
+
 /* === ANIMATIONS === */
 @keyframes floatBall {
     0%,100% { transform: translateY(0px) rotate(0deg); }
@@ -197,6 +243,27 @@ hr { border-color: rgba(255,107,53,0.3) !important; margin: 14px 0 !important; }
 .b8{display:inline-block;font-size:2.2em;animation:floatBall 2.2s ease-in-out infinite 1.4s;}
 </style>
 """, unsafe_allow_html=True)
+
+# ===== Lottie Animations =====
+@st.cache_data(ttl=3600)
+def load_lottie(url):
+    try:
+        r = requests.get(url, timeout=5)
+        if r.status_code == 200:
+            return r.json()
+    except Exception:
+        pass
+    return None
+
+def show_lottie(anim, height=160):
+    if LOTTIE_OK and anim:
+        st_lottie(anim, height=height, loop=False)
+
+# Load once (cached)
+LOTTIE_SUCCESS  = load_lottie("https://assets5.lottiefiles.com/packages/lf20_at4qzj7p.json")   # ✅ V ירוק
+LOTTIE_FAIL     = load_lottie("https://assets5.lottiefiles.com/packages/lf20_qpwb7qsq.json")   # ❌ X אדום
+LOTTIE_TROPHY   = load_lottie("https://assets7.lottiefiles.com/packages/lf20_gn0tojrd.json")   # 🏆 גביע
+LOTTIE_BALL     = load_lottie("https://assets2.lottiefiles.com/packages/lf20_m6cu96y5.json")   # 🏀 כדור
 
 # ===== Word Database =====
 WORD_DATA = {
@@ -357,13 +424,18 @@ STATS_FILE = os.path.join(os.path.dirname(__file__), "stats.json")
 def load_stats():
     if os.path.exists(STATS_FILE):
         with open(STATS_FILE, 'r', encoding='utf-8') as f:
-            return json.load(f)
+            data = json.load(f)
+        # Migrate: add trophies field if missing
+        if "trophies" not in data:
+            data["trophies"] = []
+        return data
     return {
         "total_correct": 0,
         "total_wrong": 0,
         "best_streak": 0,
         "words": {},
         "topics": {},
+        "trophies": [],
     }
 
 def save_stats(stats):
@@ -390,6 +462,86 @@ def record_answer(word_en, topic, correct):
         stats["topics"][topic]["wrong"] += 1
         st.session_state.streak = 0
     save_stats(stats)
+
+# ===== Trophy System =====
+TROPHIES_DEF = [
+    # (type, threshold, emoji, name, desc)
+    ("streak",  3,   "🥉", "צלף שלוש",      "3 תשובות ברצף"),
+    ("streak",  5,   "🥈", "מלך המגרש",     "5 ברצף"),
+    ("streak",  7,   "🥇", "He's On Fire!", "7 ברצף"),
+    ("streak",  10,  "🏆", "MVP!",           "10 ברצף — אגדה!"),
+    ("total",   10,  "🎖️", "מתחיל",          "10 תשובות נכונות"),
+    ("total",   25,  "⭐", "שחקן",           "25 תשובות נכונות"),
+    ("total",   50,  "🌟", "כוכב",           "50 תשובות נכונות"),
+    ("total",   100, "💎", "אגדה",           "100 תשובות נכונות"),
+]
+
+def check_trophies():
+    """Check if new trophies earned this render. Returns list of (emoji, name, desc)."""
+    stats = load_stats()
+    earned = set(stats.get("trophies", []))
+    new_trophies = []
+    streak = st.session_state.streak
+    total  = stats["total_correct"]
+
+    for t_type, threshold, emoji, name, desc in TROPHIES_DEF:
+        tid = f"{t_type}_{threshold}"
+        if tid not in earned:
+            if t_type == "streak" and streak >= threshold:
+                earned.add(tid)
+                new_trophies.append((emoji, name, desc))
+            elif t_type == "total" and total >= threshold:
+                earned.add(tid)
+                new_trophies.append((emoji, name, desc))
+
+    if new_trophies:
+        stats["trophies"] = list(earned)
+        save_stats(stats)
+    return new_trophies
+
+def show_trophy_cabinet(compact=False):
+    """Show the trophy cabinet. compact=True for menu, False for full stats view."""
+    stats = load_stats()
+    earned = set(stats.get("trophies", []))
+    if not earned:
+        return
+
+    earned_trophies = [
+        (e, n, d) for t, thr, e, n, d in TROPHIES_DEF
+        if f"{t}_{thr}" in earned
+    ]
+
+    st.divider()
+    st.markdown(f"### 🏆 ארון הגביעים ({len(earned_trophies)}/{len(TROPHIES_DEF)})")
+
+    if compact:
+        row = "  ".join(e for e, n, d in earned_trophies)
+        st.markdown(
+            f'<div style="font-size:2.2em;text-align:center;letter-spacing:6px">{row}</div>',
+            unsafe_allow_html=True
+        )
+    else:
+        # Show all trophies — earned + locked
+        cols = st.columns(4)
+        idx = 0
+        for t_type, threshold, emoji, name, desc in TROPHIES_DEF:
+            tid = f"{t_type}_{threshold}"
+            with cols[idx % 4]:
+                if tid in earned:
+                    st.markdown(f"""
+                    <div class="trophy-card">
+                        <div style="font-size:2.2em">{emoji}</div>
+                        <div style="font-weight:900;font-size:0.85em">{name}</div>
+                        <div style="font-size:0.72em;opacity:0.75">{desc}</div>
+                    </div>""", unsafe_allow_html=True)
+                else:
+                    st.markdown(f"""
+                    <div class="trophy-locked">
+                        <div style="font-size:2.2em">🔒</div>
+                        <div style="font-weight:900;font-size:0.85em">{name}</div>
+                        <div style="font-size:0.72em">{desc}</div>
+                    </div>""", unsafe_allow_html=True)
+            idx += 1
 
 # ===== Text-to-Speech (Web Speech API) =====
 def speak(text):
@@ -434,21 +586,21 @@ _SOUNDS_CORRECT = [
     "point-basket.mp3",
     "its-a-very-nice.mp3",
     "bang-basketball_Y4765Ub.mp3",
-    "ohhh-maaaah-gahhhhd.mp3",        # 😮 Oh my god!
-    "pac-man-waka-waka.mp3",           # 👻 Pac-Man
+    "ohhh-maaaah-gahhhhd.mp3",
+    "pac-man-waka-waka.mp3",
 ]
 _SOUNDS_TRIPLE = [
     "raul-lopez-triple-ratatatatatatata-mp3cut.mp3",
     "air-horn-basketball.mp3",
     "67_SQlv2Xv.mp3",
-    "fighting.mp3",                    # 💪 Fighting!
-    "faceit_accept_sound_epic_-8962405019821701368.mp3",  # 🎮 Epic accept
+    "fighting.mp3",
+    "faceit_accept_sound_epic_-8962405019821701368.mp3",
 ]
 _SOUNDS_HEATING = [
     "hes-heating-up_e6Y3nOZ.mp3",
     "lebroooon-james.mp3",
     "who-r-u-1.mp3",
-    "power-rangers-3-sec.mp3",         # ⚡ Power Rangers
+    "power-rangers-3-sec.mp3",
 ]
 _SOUNDS_ON_FIRE = [
     "hes-on-fire-nba-jam.mp3",
@@ -461,7 +613,7 @@ _SOUNDS_MVP = [
     "crowd-chanting-at-stadium.mp3",
     "what-are-you-playing-basketball-touchdown.mp3",
     "a-nba-1.mp3",
-    "power-rangers-3-sec.mp3",         # ⚡ Power Rangers למנצחים
+    "power-rangers-3-sec.mp3",
 ]
 _SOUNDS_WRONG = [
     "defense-nba_BFEmUA8.mp3",
@@ -469,8 +621,8 @@ _SOUNDS_WRONG = [
     "punch-gaming-sound-effect-hd_RzlG1GE.mp3",
     "finish-him.mp3",
     "67-meme_cdLcL5q.mp3",
-    "hohoho-brook-risa.mp3",           # 😂 HoHoHo
-    "universfield-game-over-deep-male-voice-clip-352695.mp3",  # 💀 Game Over
+    "hohoho-brook-risa.mp3",
+    "universfield-game-over-deep-male-voice-clip-352695.mp3",
 ]
 
 def play_success_sound(streak):
@@ -519,7 +671,7 @@ def get_new_question(topic, mode):
     wrong_samples = random.sample(all_words, min(3, len(all_words)))
     if mode == "multiple_choice":
         options = [question['en']] + [w[0] for w in wrong_samples]
-    else:  # reverse, listen, type_mode
+    else:
         options = [question['he']] + [w[1] for w in wrong_samples]
     random.shuffle(options)
     return question, options
@@ -538,7 +690,6 @@ def load_next_question():
 
 # ===== SCREEN: Name Entry =====
 def show_name_screen():
-    # כדורי ספורט מרחפים
     st.markdown("""
     <div class="sports-row">
         <span class="b1">🏀</span>
@@ -552,7 +703,12 @@ def show_name_screen():
     </div>
     """, unsafe_allow_html=True)
 
-    # קופסת ברוכים הבאים
+    # Lottie basketball animation on welcome screen
+    if LOTTIE_OK and LOTTIE_BALL:
+        col_l, col_anim, col_r = st.columns([1, 2, 1])
+        with col_anim:
+            st_lottie(LOTTIE_BALL, height=130, loop=True, key="welcome_ball")
+
     st.markdown("""
     <div class="welcome-box">
         <div style="font-size:2.5em; font-weight:900; letter-spacing:1px; margin-bottom:10px;">
@@ -567,7 +723,6 @@ def show_name_screen():
     </div>
     """, unsafe_allow_html=True)
 
-    # שורת ספורט תחתונה
     st.markdown("""
     <div style="display:flex; justify-content:space-around; margin:10px 0 20px 0; font-size:2em;">
         <span title="כדורסל">🏀</span>
@@ -637,6 +792,9 @@ def show_menu():
     if st.button("📊 סטטיסטיקות שלי"):
         st.session_state.screen = "stats"
         st.rerun()
+
+    # Trophy cabinet (compact view on menu)
+    show_trophy_cabinet(compact=True)
 
 # ===== SCREEN: Topic Select =====
 def show_topic_select():
@@ -795,11 +953,20 @@ def show_game():
             if st.button("🔊 שמע"):
                 speak(q["en"])
 
-    # --- Feedback ---
+    # --- Feedback (with Lottie + Trophy Check) ---
     st.write("")
     if st.session_state.feedback:
         fb_type, correct_answer = st.session_state.feedback
+        qa = st.session_state.questions_answered  # unique key suffix
+
         if fb_type == "correct":
+            # Lottie success animation
+            if LOTTIE_OK and LOTTIE_SUCCESS:
+                col_l, col_mid, col_r = st.columns([1, 2, 1])
+                with col_mid:
+                    st_lottie(LOTTIE_SUCCESS, height=160, loop=False, key=f"lottie_ok_{qa}")
+
+            # Success message
             streak = st.session_state.streak
             name = st.session_state.player_name
             if streak >= 10:
@@ -818,9 +985,30 @@ def show_game():
                     f"🎯 פגעת! כן {name}!  **{correct_answer}**",
                 ]
                 st.success(random.choice(msgs))
+
             if mode in ["multiple_choice", "type_mode"]:
                 speak(correct_answer)
+
+            # 🏆 Check for new trophies
+            new_trophies = check_trophies()
+            for emoji, t_name, t_desc in new_trophies:
+                st.balloons()
+                st.markdown(
+                    f'<div class="new-trophy-banner">🎉 גביע חדש! {emoji} <strong>{t_name}</strong> — {t_desc}</div>',
+                    unsafe_allow_html=True
+                )
+                if LOTTIE_OK and LOTTIE_TROPHY:
+                    col_l, col_mid, col_r = st.columns([1, 2, 1])
+                    with col_mid:
+                        st_lottie(LOTTIE_TROPHY, height=130, loop=False, key=f"lottie_trophy_{qa}_{t_name}")
+
         else:
+            # Lottie fail animation
+            if LOTTIE_OK and LOTTIE_FAIL:
+                col_l, col_mid, col_r = st.columns([1, 2, 1])
+                with col_mid:
+                    st_lottie(LOTTIE_FAIL, height=160, loop=False, key=f"lottie_fail_{qa}")
+
             st.error(f"❌ לא נכון. התשובה הנכונה היא: **{correct_answer}**")
             col_retry, col_next = st.columns(2)
             with col_retry:
@@ -878,6 +1066,9 @@ def show_stats():
                 if st.button(f"🔊 {word}  ({d['wrong']} שגיאות)", key=f"speak_{word}"):
                     speak(word)
 
+    # Full trophy cabinet
+    show_trophy_cabinet(compact=False)
+
     st.divider()
     col_back, col_reset = st.columns(2)
     with col_back:
@@ -887,7 +1078,7 @@ def show_stats():
     with col_reset:
         if st.button("🗑️ אפס סטטיסטיקות"):
             save_stats({"total_correct": 0, "total_wrong": 0,
-                        "best_streak": 0, "words": {}, "topics": {}})
+                        "best_streak": 0, "words": {}, "topics": {}, "trophies": []})
             st.success("הסטטיסטיקות אופסו!")
             st.rerun()
 
