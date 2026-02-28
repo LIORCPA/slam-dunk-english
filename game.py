@@ -18,6 +18,17 @@ st.set_page_config(page_title="Slam Dunk English 🏀", layout="centered", initi
 # ===== CSS =====
 st.markdown("""
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Bangers&display=swap');
+
+/* === GLOBAL DIRECTION & LTR HELPERS === */
+html, body, .stApp { direction: rtl; }
+.ltr { direction: ltr; unicode-bidi: plaintext; }
+
+/* === ACCESSIBILITY: Respect Reduced Motion === */
+@media (prefers-reduced-motion: reduce){
+  * { animation: none !important; transition: none !important; }
+}
+
 /* === BACKGROUND - Dark Navy with Grid (like NBA game) === */
 .stApp {
     background:
@@ -26,11 +37,11 @@ st.markdown("""
         linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%) !important;
 }
 
-/* === MAIN CARD - White with thick orange border === */
+/* === MAIN CARD === */
 .main .block-container {
     background: linear-gradient(180deg, #f8f8f8 0%, #ffffff 100%) !important;
     border-radius: 30px !important;
-    padding: 35px 28px 30px !important;
+    padding: clamp(18px,3vw,35px) clamp(16px,3vw,28px) clamp(16px,3vw,30px) !important;
     box-shadow: 0 20px 60px rgba(0,0,0,0.55) !important;
     outline: 7px solid #ff6b35;
     max-width: 600px !important;
@@ -38,60 +49,65 @@ st.markdown("""
     margin-bottom: 18px !important;
 }
 
-/* === TYPOGRAPHY === */
-h1, h2, h3, h4, p, div, span, label, .stMarkdown {
+/* === TYPOGRAPHY - Bangers for headings & game UI === */
+h1, h2, h3, h4 {
+    font-family: 'Bangers', 'Arial Black', Arial, sans-serif !important;
+    letter-spacing: 2px !important;
+}
+p, div, span, label, .stMarkdown {
     font-family: 'Arial Black', Arial, sans-serif !important;
 }
 h1 {
     color: #ff6b35 !important;
     text-shadow: 3px 3px 0px rgba(0,0,0,0.15) !important;
-    font-weight: 900 !important;
-    letter-spacing: 1px !important;
+    font-weight: 400 !important;
+    letter-spacing: 3px !important;
     text-align: center !important;
 }
-h2, h3 { color: #1a1a2e !important; font-weight: 900 !important; }
+h2, h3 { color: #1a1a2e !important; }
 
-/* === BUTTONS - Bold 3D Arcade style === */
+/* === BUTTONS - Neon Glow Arcade style === */
 .stButton > button {
     width: 100% !important;
     border-radius: 15px !important;
     height: 3.6em !important;
-    font-size: 1.1em !important;
+    font-size: 1.15em !important;
     font-weight: 900 !important;
-    font-family: 'Arial Black', Arial, sans-serif !important;
-    border: none !important;
+    font-family: 'Bangers', 'Arial Black', Arial, sans-serif !important;
+    letter-spacing: 2px !important;
+    border: 2px solid rgba(255,107,53,0.3) !important;
     color: white !important;
-    letter-spacing: 1px !important;
     text-shadow: 1px 1px 3px rgba(0,0,0,0.4) !important;
     margin-bottom: 10px !important;
     background: linear-gradient(145deg, #e74c3c 0%, #c0392b 100%) !important;
-    box-shadow: 0 8px 0 rgba(100,0,0,0.5), 0 10px 22px rgba(0,0,0,0.30) !important;
+    box-shadow: 0 8px 0 rgba(100,0,0,0.5), 0 10px 22px rgba(0,0,0,0.30), 0 0 15px rgba(231,76,60,0.3) !important;
     transition: transform 0.1s, box-shadow 0.1s !important;
 }
 .stButton > button:hover {
     transform: translateY(-3px) scale(1.03) !important;
-    box-shadow: 0 11px 0 rgba(100,0,0,0.45), 0 14px 28px rgba(0,0,0,0.35) !important;
+    box-shadow: 0 11px 0 rgba(100,0,0,0.45), 0 14px 28px rgba(0,0,0,0.35), 0 0 30px rgba(255,107,53,0.7) !important;
     background: linear-gradient(145deg, #f05545 0%, #d32f2f 100%) !important;
+    border: 2px solid rgba(255,107,53,0.7) !important;
 }
 .stButton > button:active {
     transform: translateY(5px) scale(0.97) !important;
-    box-shadow: 0 2px 0 rgba(100,0,0,0.5) !important;
+    box-shadow: 0 2px 0 rgba(100,0,0,0.5), 0 0 10px rgba(231,76,60,0.5) !important;
 }
 
 /* === BIG WORD DISPLAY === */
 .big-word {
-    font-size: 2.8em;
-    font-weight: 900;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-family: 'Bangers', 'Arial Black', Arial, sans-serif !important;
+    font-weight: 400;
     text-align: center;
-    padding: 25px 15px;
+    padding: clamp(14px,3vw,25px) clamp(12px,3vw,15px);
     background: linear-gradient(135deg, #FF6B00 0%, #FF9500 100%);
     color: white;
     border-radius: 20px;
     margin: 12px 0 24px 0;
-    letter-spacing: 3px;
-    box-shadow: 0 8px 0 rgba(180,60,0,0.55), 0 14px 30px rgba(255,107,0,0.40);
+    letter-spacing: clamp(2px, 0.8vw, 4px);
+    box-shadow: 0 8px 0 rgba(180,60,0,0.55), 0 14px 30px rgba(255,107,0,0.40), 0 0 20px rgba(255,107,0,0.25);
     text-shadow: 2px 2px 5px rgba(0,0,0,0.30);
-    font-family: 'Arial Black', Arial, sans-serif !important;
 }
 
 /* === SCORE / STREAK / TOPIC BOXES === */
@@ -104,7 +120,8 @@ h2, h3 { color: #1a1a2e !important; font-weight: 900 !important; }
     border-radius: 15px;
     color: white;
     box-shadow: 0 6px 0 rgba(0,100,0,0.45), 0 10px 18px rgba(39,174,96,0.35);
-    font-family: 'Arial Black', Arial, sans-serif !important;
+    font-family: 'Bangers', 'Arial Black', Arial, sans-serif !important;
+    letter-spacing: 1px;
 }
 .streak-box {
     font-size: 1.1em;
@@ -115,7 +132,25 @@ h2, h3 { color: #1a1a2e !important; font-weight: 900 !important; }
     color: white;
     font-weight: 900;
     box-shadow: 0 6px 0 rgba(140,0,0,0.45), 0 10px 18px rgba(231,76,60,0.35);
-    font-family: 'Arial Black', Arial, sans-serif !important;
+    font-family: 'Bangers', 'Arial Black', Arial, sans-serif !important;
+    letter-spacing: 1px;
+}
+/* 🔥 Streak >= 5: box glows like fire */
+.streak-box-fire {
+    font-size: 1.1em;
+    text-align: center;
+    padding: 14px 8px;
+    background: linear-gradient(135deg, #ff4500 0%, #ff6b00 50%, #ff9500 100%);
+    border-radius: 15px;
+    color: white;
+    font-weight: 900;
+    font-family: 'Bangers', 'Arial Black', Arial, sans-serif !important;
+    letter-spacing: 1px;
+    animation: fireFlicker 0.6s ease-in-out infinite alternate;
+}
+@keyframes fireFlicker {
+    from { box-shadow: 0 6px 0 rgba(180,50,0,0.6), 0 10px 20px rgba(255,69,0,0.4), 0 0 15px rgba(255,150,0,0.5); }
+    to   { box-shadow: 0 6px 0 rgba(180,50,0,0.6), 0 10px 30px rgba(255,69,0,0.7), 0 0 35px rgba(255,200,0,0.9); }
 }
 .topic-badge {
     font-size: 1.2em;
@@ -126,7 +161,17 @@ h2, h3 { color: #1a1a2e !important; font-weight: 900 !important; }
     color: white;
     font-weight: 900;
     box-shadow: 0 6px 0 rgba(0,80,160,0.45), 0 10px 18px rgba(52,152,219,0.35);
-    font-family: 'Arial Black', Arial, sans-serif !important;
+    font-family: 'Bangers', 'Arial Black', Arial, sans-serif !important;
+    letter-spacing: 1px;
+}
+
+/* === BASKETBALL LIVES BAR === */
+.lives-bar {
+    text-align: center;
+    font-size: 1.7em;
+    margin: 4px 0 10px 0;
+    letter-spacing: 3px;
+    direction: ltr;
 }
 
 /* === WELCOME BOX === */
@@ -264,6 +309,7 @@ LOTTIE_SUCCESS  = load_lottie("https://assets5.lottiefiles.com/packages/lf20_at4
 LOTTIE_FAIL     = load_lottie("https://assets5.lottiefiles.com/packages/lf20_qpwb7qsq.json")   # ❌ X אדום
 LOTTIE_TROPHY   = load_lottie("https://assets7.lottiefiles.com/packages/lf20_gn0tojrd.json")   # 🏆 גביע
 LOTTIE_BALL     = load_lottie("https://assets2.lottiefiles.com/packages/lf20_m6cu96y5.json")   # 🏀 כדור
+LOTTIE_FIRE     = load_lottie("https://assets9.lottiefiles.com/packages/lf20_f7p9pxm2.json")   # 🔥 אש
 
 # ===== Word Database =====
 WORD_DATA = {
@@ -463,6 +509,13 @@ def record_answer(word_en, topic, correct):
         st.session_state.streak = 0
     save_stats(stats)
 
+    # Track last 5 answers for basketball lives bar
+    hist = st.session_state.answer_history
+    hist.append(correct)
+    if len(hist) > 5:
+        hist.pop(0)
+    st.session_state.answer_history = hist
+
 # ===== Trophy System =====
 TROPHIES_DEF = [
     # (type, threshold, emoji, name, desc)
@@ -656,6 +709,7 @@ def init_session():
         "pending_sound": None,
         "player_name": None,
         "seen_words": [],
+        "answer_history": [],   # last 5 answers: True=correct, False=wrong
     }
     for k, v in defaults.items():
         if k not in st.session_state:
@@ -834,6 +888,8 @@ def show_topic_select():
         st.session_state.streak = 0
         st.session_state.questions_answered = 0
         st.session_state.feedback = None
+        st.session_state.answer_history = []
+        st.session_state.seen_words = []
         load_next_question()
         st.session_state.screen = "game"
         st.rerun()
@@ -871,16 +927,30 @@ def show_game():
         return
 
     # Header stats
+    streak = st.session_state.streak
+    streak_class = "streak-box-fire" if streak >= 5 else "streak-box"
+    fires = "🔥" * min(streak, 5) if streak > 0 else "💤"
     col1, col2, col3 = st.columns(3)
     with col1:
         st.markdown(f'<div class="score-box">✅ {st.session_state.score}</div>', unsafe_allow_html=True)
     with col2:
-        streak = st.session_state.streak
-        fires = "🔥" * min(streak, 5) if streak > 0 else "💤"
-        st.markdown(f'<div class="streak-box">{fires} {streak}</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="{streak_class}">{fires} {streak}</div>', unsafe_allow_html=True)
     with col3:
         emoji = actual_topic.split()[-1] if actual_topic else "?"
         st.markdown(f'<div class="topic-badge">{emoji}</div>', unsafe_allow_html=True)
+
+    # 🔥 Fire Lottie when streak >= 5
+    if streak >= 5 and LOTTIE_OK and LOTTIE_FIRE:
+        col_l, col_mid, col_r = st.columns([1, 2, 1])
+        with col_mid:
+            st_lottie(LOTTIE_FIRE, height=90, loop=True, key=f"fire_{streak}")
+
+    # 🏀 Basketball Lives Bar (last 5 answers)
+    hist = st.session_state.answer_history
+    if hist:
+        balls = "".join("🏀" if h else "💀" for h in hist)
+        empty = "⬜" * (5 - len(hist))
+        st.markdown(f'<div class="lives-bar">{empty}{balls}</div>', unsafe_allow_html=True)
 
     st.write("")
 
@@ -891,7 +961,7 @@ def show_game():
         if st.button("🔊 הקשב לתשובה הנכונה"):
             speak(q["en"])
         for opt in st.session_state.options:
-            if st.button(opt, key=f"opt_{opt}"):
+            if st.button(opt, key=f"opt_{st.session_state.screen}_{st.session_state.questions_answered}_{opt}"):
                 correct = (opt == q["en"])
                 record_answer(q["en"], actual_topic, correct)
                 st.session_state.feedback = ("correct", q["en"]) if correct else ("wrong", q["en"])
@@ -903,12 +973,12 @@ def show_game():
 
     # --- Reverse Mode ---
     elif mode == "reverse":
-        st.markdown(f'<div class="big-word">{q["en"]}</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="big-word"><span class="ltr">{q["en"]}</span></div>', unsafe_allow_html=True)
         if st.button("🔊 הקשב"):
             speak(q["en"])
         st.write("##### מה המשמעות בעברית?")
         for opt in st.session_state.options:
-            if st.button(opt, key=f"opt_{opt}"):
+            if st.button(opt, key=f"opt_{st.session_state.screen}_{st.session_state.questions_answered}_{opt}"):
                 correct = (opt == q["he"])
                 record_answer(q["en"], actual_topic, correct)
                 st.session_state.feedback = ("correct", q["he"]) if correct else ("wrong", q["he"])
@@ -937,7 +1007,7 @@ def show_game():
                 </script>""", height=0, width=0)
         st.write("##### מה שמעת?")
         for opt in st.session_state.options:
-            if st.button(opt, key=f"opt_{opt}"):
+            if st.button(opt, key=f"opt_{st.session_state.screen}_{st.session_state.questions_answered}_{opt}"):
                 correct = (opt == q["he"])
                 record_answer(q["en"], actual_topic, correct)
                 st.session_state.feedback = ("correct", q["he"]) if correct else ("wrong", q["he"])
