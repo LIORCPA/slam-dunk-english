@@ -168,9 +168,9 @@ h2, h3 { color: #1a1a2e !important; }
 /* === BASKETBALL LIVES BAR === */
 .lives-bar {
     text-align: center;
-    font-size: 1.7em;
+    font-size: 1.3em;
     margin: 4px 0 10px 0;
-    letter-spacing: 3px;
+    letter-spacing: 1px;
     direction: ltr;
 }
 
@@ -509,10 +509,10 @@ def record_answer(word_en, topic, correct):
         st.session_state.streak = 0
     save_stats(stats)
 
-    # Track last 5 answers for basketball lives bar
+    # Track last 15 answers for basketball lives bar
     hist = st.session_state.answer_history
     hist.append(correct)
-    if len(hist) > 5:
+    if len(hist) > 15:
         hist.pop(0)
     st.session_state.answer_history = hist
 
@@ -523,6 +523,7 @@ TROPHIES_DEF = [
     ("streak",  5,   "🥈", "מלך המגרש",     "5 ברצף"),
     ("streak",  7,   "🥇", "He's On Fire!", "7 ברצף"),
     ("streak",  10,  "🏆", "MVP!",           "10 ברצף — אגדה!"),
+    ("streak",  15,  "👑", "Hall of Fame",  "15 ברצף — אלוף העולם!"),
     ("total",   10,  "🎖️", "מתחיל",          "10 תשובות נכונות"),
     ("total",   25,  "⭐", "שחקן",           "25 תשובות נכונות"),
     ("total",   50,  "🌟", "כוכב",           "50 תשובות נכונות"),
@@ -949,7 +950,7 @@ def show_game():
     hist = st.session_state.answer_history
     if hist:
         balls = "".join("🏀" if h else "💀" for h in hist)
-        empty = "⬜" * (5 - len(hist))
+        empty = "⬜" * (15 - len(hist))
         st.markdown(f'<div class="lives-bar">{empty}{balls}</div>', unsafe_allow_html=True)
 
     st.write("")
